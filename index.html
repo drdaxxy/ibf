@@ -32,6 +32,19 @@ var output_func = function(id)
 	}
 }
 
+function switchNoninteractive()
+{
+	document.getElementById("noninteractive-output").innerHTML = "";
+	document.getElementById("buttonmode").style.display = "none";
+	document.getElementById("noninteractive").style.display = "";
+}
+
+function switchButtonmode()
+{
+	document.getElementById("noninteractive").style.display = "none";
+	document.getElementById("buttonmode").style.display = "";
+}
+
 function noninteractiveRunInterpreter()
 {
 	document.getElementById("noninteractive-output").innerHTML = "";
@@ -58,8 +71,8 @@ function noninteractiveRunInterpreter()
 				<span class="navbar-brand">Interactive Brainfuck - select/restart</span>
 			</div>
 			<ul class="nav navbar-nav">
-				<li><a href="#">Non-interactive mode</a></li>
-				<li><a href="#">Button mode</a></li>
+				<li><a href="#" onclick="switchNoninteractive()">Non-interactive mode</a></li>
+				<li><a href="#" onclick="switchButtonmode()">Button mode</a></li>
 			</ul>
 		</div>
 	</div>
@@ -72,7 +85,21 @@ function noninteractiveRunInterpreter()
 		<p>
 			Output:
 		</p>
-		<div id="noninteractive-output" class="well"></div>
+		<div id="noninteractive-output" class="well output"></div>
+	</div>
+	
+	<div class="container" id="buttonmode" style="display: none;">
+		<div id="noninteractive-output" class="well output"></div>
+		<p>
+			<button type="button" class="btn btn-lg btn-default" onclick="buttonmodeSend('>')" disabled>&gt;</button>
+			<button type="button" class="btn btn-lg btn-default" onclick="buttonmodeSend('<')" disabled>&lt;</button>
+			<button type="button" class="btn btn-lg btn-default" onclick="buttonmodeSend('+')" disabled>+</button>
+			<button type="button" class="btn btn-lg btn-default" onclick="buttonmodeSend('-')" disabled>-</button>
+			<button type="button" class="btn btn-lg btn-default" onclick="buttonmodeSend('.')" disabled>.</button>
+			<button type="button" class="btn btn-lg btn-default" onclick="buttonmodeSend(',')" disabled>,</button>
+			<button type="button" class="btn btn-lg btn-default" onclick="buttonmodeSend('[')" disabled>[</button>
+			<button type="button" class="btn btn-lg btn-default" onclick="buttonmodeSend(']')" disabled>]</button>
+		</p>
 	</div>
 	
 	<script src="//code.jquery.com/jquery.js"></script>

@@ -2,7 +2,7 @@
 	width: 100%;
 }
 
-#noninteractive-output {
+.output {
 	height: 20em;
 	overflow: scroll;
 }
