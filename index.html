@@ -52,12 +52,17 @@ function switchButtonmode()
 		output_func("buttonmode-output")
 	);
 	interpreter.run();
+	document.getElementById("buttonmode-output").innerHTML = "";
+	document.getElementById("buttonmode-input").innerHTML = "";
 	document.getElementById("buttonmode").style.display = "";
 }
 
 function buttonmodeSend(inst)
 {
 	buttonmodeButtonsDisabled(true);
+	input_div = document.getElementById("buttonmode-input");
+	input_div.innerHTML += inst;
+	input_div.scrollTop = input_div.scrollHeight;
 	buttonmode_instruction_callback(inst);
 	interpreter.run();
 }
@@ -116,6 +121,10 @@ function noninteractiveRunInterpreter()
 	
 	<div class="container" id="buttonmode" style="display: none;">
 		<div id="buttonmode-output" class="well output"></div>
+		<p>
+			History:
+		</p>
+		<div id="buttonmode-input" class="well input"></div>
 		<p>
 			<button type="button" class="btn btn-lg btn-default" onclick="buttonmodeSend('>')" disabled>&gt;</button>
 			<button type="button" class="btn btn-lg btn-default" onclick="buttonmodeSend('<')" disabled>&lt;</button>
