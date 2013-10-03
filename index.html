@@ -14,7 +14,7 @@
 <body>
 
 <script>
-var interpreter;
+var interpreter, buttonmode_instruction_callback;
 
 var input_func = function(cb)
 {
@@ -24,9 +24,9 @@ var input_func = function(cb)
 
 var output_func = function(id)
 {
-	return function(cb)
+	return function(byte)
 	{
-		div = document.getElementById(id).innerHTML;
+		div = document.getElementById(id);
 		div.innerHTML += String.fromCharCode(byte);
 		div.scrollTop = div.scrollHeight;
 	}
@@ -42,7 +42,33 @@ function switchNoninteractive()
 function switchButtonmode()
 {
 	document.getElementById("noninteractive").style.display = "none";
+	buttonmodeButtonsDisabled(true);
+	interpreter = new Brainfuck(
+		function(cb) {
+			buttonmode_instruction_callback = cb;
+			buttonmodeButtonsDisabled(false);
+		},
+		input_func,
+		output_func("buttonmode-output")
+	);
+	interpreter.run();
 	document.getElementById("buttonmode").style.display = "";
+}
+
+function buttonmodeSend(inst)
+{
+	buttonmodeButtonsDisabled(true);
+	buttonmode_instruction_callback(inst);
+	interpreter.run();
+}
+
+function buttonmodeButtonsDisabled(setting)
+{
+	buttons = document.getElementById("buttonmode").getElementsByTagName("button");
+	for (i=0; i<buttons.length; i++)
+	{
+		buttons[i].disabled = setting;
+	}
 }
 
 function noninteractiveRunInterpreter()
@@ -89,7 +115,7 @@ function noninteractiveRunInterpreter()
 	</div>
 	
 	<div class="container" id="buttonmode" style="display: none;">
-		<div id="noninteractive-output" class="well output"></div>
+		<div id="buttonmode-output" class="well output"></div>
 		<p>
 			<button type="button" class="btn btn-lg btn-default" onclick="buttonmodeSend('>')" disabled>&gt;</button>
 			<button type="button" class="btn btn-lg btn-default" onclick="buttonmodeSend('<')" disabled>&lt;</button>
