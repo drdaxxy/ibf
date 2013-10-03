@@ -2,17 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>(Non-)Interactive Brainfuck</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="ibf.css">
 	<script src="interpreter.js"></script>
+	
+	<title>(Non-)Interactive Brainfuck</title>
 </head>
 
 <body>
 
 <script>
-function runInterpreter()
+function noninteractiveRunInterpreter()
 {
-	document.getElementById("output").innerHTML = "";
-	code = document.getElementById("code").value;
+	document.getElementById("noninteractive-output").innerHTML = "";
+	code = document.getElementById("noninteractive-code").value;
 	counter = 0;
 	bf = new Brainfuck(
 		function(cb) {
@@ -28,17 +33,36 @@ function runInterpreter()
 		},
 		function(byte)
 		{
-			document.getElementById("output").innerHTML += String.fromCharCode(byte);
+			document.getElementById("noninteractive-output").innerHTML += String.fromCharCode(byte);
 		}
 	);
 	bf.run();
 }
 </script>
+	<div class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<span class="navbar-brand">Interactive Brainfuck - select/restart</span>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a href="#">Non-interactive mode</a></li>
+				<li><a href="#">Button mode</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="container" id="noninteractive">
+		<p>
+			<textarea rows="10" id="noninteractive-code"></textarea>
+		</p>
+		<p><button type="button" class="btn btn-default" onclick="noninteractiveRunInterpreter()">run this</button></p>
+		<p>
+			Output:
+		</p>
+		<div id="noninteractive-output"></div>
+	</div>
 
-<textarea rows="10" cols="100" id="code"></textarea><br>
-<button onclick="runInterpreter()">run this</button><br>
-Output:
-<div id="output"></div>
-
+	<script src="//code.jquery.com/jquery.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>
