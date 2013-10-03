@@ -19,6 +19,7 @@ var interpreter;
 var input_func = function(cb)
 {
 	cb(prompt("Input one character").charCodeAt(0));
+	interpreter.run();
 }
 
 var output_func = function(id)
