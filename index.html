@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>(Non-)Interactive Brainfuck</title>
+	<script src="interpreter.js"></script>
+</head>
+
+<body>
+
+<script>
+function runInterpreter()
+{
+	document.getElementById("output").innerHTML = "";
+	code = document.getElementById("code").value;
+	counter = 0;
+	bf = new Brainfuck(
+		function(cb) {
+			if(counter < code.length)
+			{
+				cb(code[counter]);
+				counter++;
+				bf.run();
+			}
+		},
+		function(cb) {
+			cb(prompt("Input one character").charCodeAt(0));
+		},
+		function(byte)
+		{
+			document.getElementById("output").innerHTML += String.fromCharCode(byte);
+		}
+	);
+	bf.run();
+}
+</script>
+
+<textarea rows="10" cols="100" id="code"></textarea><br>
+<button onclick="runInterpreter()">run this</button><br>
+Output:
+<div id="output"></div>
+
+</body>
+</html>
