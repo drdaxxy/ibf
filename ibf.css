@@ -1,3 +1,8 @@
 #noninteractive-code {
 	width: 100%;
 }
+
+#noninteractive-output {
+	height: 20em;
+	overflow: scroll;
+}
