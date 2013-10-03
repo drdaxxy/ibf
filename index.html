@@ -14,6 +14,8 @@
 <body>
 
 <script>
+var interpreter;
+
 var input_func = function(cb)
 {
 	cb(prompt("Input one character").charCodeAt(0));
@@ -34,19 +36,19 @@ function noninteractiveRunInterpreter()
 	document.getElementById("noninteractive-output").innerHTML = "";
 	code = document.getElementById("noninteractive-code").value;
 	counter = 0;
-	bf = new Brainfuck(
+	interpreter = new Brainfuck(
 		function(cb) {
 			if(counter < code.length)
 			{
 				cb(code[counter]);
 				counter++;
-				bf.run();
+				interpreter.run();
 			}
 		},
 		input_func,
 		output_func("noninteractive-output")
 	);
-	bf.run();
+	interpreter.run();
 }
 </script>
 	<div class="navbar navbar-default">
