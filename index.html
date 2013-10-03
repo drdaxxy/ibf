@@ -14,7 +14,8 @@
 <body>
 
 <script>
-var interpreter, buttonmode_instruction_callback;
+var interpreter, instruction_callback;
+var shellmode_input = false;
 
 var input_func = function(cb)
 {
@@ -34,18 +35,22 @@ var output_func = function(id)
 
 function switchNoninteractive()
 {
+	shellmode_input = false;
 	document.getElementById("noninteractive-output").innerHTML = "";
 	document.getElementById("buttonmode").style.display = "none";
+	document.getElementById("shellmode").style.display = "none";
 	document.getElementById("noninteractive").style.display = "";
 }
 
 function switchButtonmode()
 {
+	shellmode_input = false;
 	document.getElementById("noninteractive").style.display = "none";
+	document.getElementById("shellmode").style.display = "none";
 	buttonmodeButtonsDisabled(true);
 	interpreter = new Brainfuck(
 		function(cb) {
-			buttonmode_instruction_callback = cb;
+			instruction_callback = cb;
 			buttonmodeButtonsDisabled(false);
 		},
 		input_func,
@@ -57,13 +62,44 @@ function switchButtonmode()
 	document.getElementById("buttonmode").style.display = "";
 }
 
+function switchShellmode()
+{
+	shellmode_input = false;
+	document.getElementById("noninteractive").style.display = "none";
+	document.getElementById("buttonmode").style.display = "none";
+	interpreter = new Brainfuck(
+		function(cb) {
+			instruction_callback = cb;
+			shellmode_input = true;
+		},
+		input_func,
+		output_func("shellmode-output")
+	);
+	interpreter.run();
+	document.onkeypress = function(e) {
+		if(shellmode_input == true)
+		{
+			shellmode_input = false;
+			input_field = document.getElementById("shellmode-input");
+			if(e.keyCode == 13) input_field.innerHTML += "<br>";
+			else input_field.innerHTML += String.fromCharCode(e.keyCode);
+			input_field.scrollTop = input_field.scrollHeight;
+			instruction_callback(String.fromCharCode(e.keyCode));
+			interpreter.run();
+		}
+	}
+	document.getElementById("shellmode-output").innerHTML = "";
+	document.getElementById("shellmode-input").innerHTML = "";
+	document.getElementById("shellmode").style.display = "";
+}
+
 function buttonmodeSend(inst)
 {
 	buttonmodeButtonsDisabled(true);
 	input_div = document.getElementById("buttonmode-input");
 	input_div.innerHTML += inst;
 	input_div.scrollTop = input_div.scrollHeight;
-	buttonmode_instruction_callback(inst);
+	instruction_callback(inst);
 	interpreter.run();
 }
 
@@ -104,6 +140,7 @@ function noninteractiveRunInterpreter()
 			<ul class="nav navbar-nav">
 				<li><a href="#" onclick="switchNoninteractive()">Non-interactive mode</a></li>
 				<li><a href="#" onclick="switchButtonmode()">Button mode</a></li>
+				<li><a href="#" onclick="switchShellmode()">Shell mode</a></li>
 			</ul>
 		</div>
 	</div>
@@ -136,6 +173,14 @@ function noninteractiveRunInterpreter()
 			<button type="button" class="btn btn-lg btn-default" onclick="buttonmodeSend(']')" disabled>]</button>
 			<button type="button" class="btn btn-lg btn-default" onclick="document.getElementById('buttonmode-input').innerHTML += '<br>'" disabled>New line</button>
 		</p>
+	</div>
+	
+	<div class="container" id="shellmode" style="display: none;">
+		<div id="shellmode-output" class="well output"></div>
+		<p>
+			Input:
+		</p>
+		<div id="shellmode-input" class="well input"></div>
 	</div>
 	
 	<script src="//code.jquery.com/jquery.js"></script>
