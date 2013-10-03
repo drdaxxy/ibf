@@ -5,10 +5,12 @@
 .output {
 	height: 10em;
 	overflow: scroll;
+	word-wrap: break-word;
 }
 
 .input {
 	height: 15em;
 	overflow: scroll;
+	word-wrap: break-word;
 	font-family: monospace;
 }
